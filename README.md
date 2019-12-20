@@ -81,7 +81,78 @@ ObjectModel
     .validate(user)
 ```
 
-## Recommended Architecture
+## Adding AJV Keywords
+
+ObjectModel allows you to add custom AJV keywords through the `addKeyword()` function. Just pick a name for your keyword and define a validation function for it according to the [AJV custom keyword specs](https://ajv.js.org/custom.html), then add it to ObjectModel with `ObjectModel.addKeyword(name, validationFunction)`
+
+## Built-In Custom Keywords
+
+ObjectModel ships with one custom keyword built-in: `is`
+
+The `is` keyword first checks if its input data is prototype-linked to the given schema type via `schemaType.isPrototypeOf(data)`. If that is false then the keyword performs a second check: `data instanceof schemaType`. If the data is either prototype-linked or an instance of the defined schema type then the keyword returns true, otherwise false. The `is` keyword supports schema defining a single type or an array of possible types. For arrays, if the input data matches any of the listed types then the keyword will return true.
+
+Out of the box, the `is` keyword will match against the following types: `Object`, `Array`, `Function`, `Number`, `String`, `Date`, `RegExp`, `Buffer`, `Promise`
+
+You can easily add custom types to the keyword as well using the `addType()` or `addTypes()` functions.
+
+Here's an example of the `is` keyword in action using a custom type:
+
+```js
+const ObjectModel = require('@unplgtc/object-model');
+
+const Username = {
+    setName(name) {
+        this.name = name;
+
+        return this;
+    }
+}
+
+const UserSchema = {
+    key: 'USER',
+
+    v1() {
+        return ObjectModel.buildValidator(
+            {
+                title: 'User',
+                type: 'object',
+                properties: {
+                    username: {
+                        type: 'object',
+                        is: 'Username'
+                    }
+                }
+            }
+        );
+    }
+}
+
+ObjectModel.addSchema(UserSchema.key, UserSchema);
+ObjectModel.addType('Username', Username);
+
+const username = Object.create(Username).setName('some-username');
+
+const user = {
+    username: username
+}
+
+ObjectModel
+    .schema(SCHEMA.USER)
+    .v1()
+    .validate(user); // True
+```
+
+To add multiple types at once, just call `ObjectModel.addTypes()` with an Object whose keys are the names of your types and whose values are the types themselves:
+
+```js
+const types = {
+    Username: Username
+}
+
+ObjectModel.addTypes(types);
+```
+
+## Suggested Architecture
 
 The above steps are all you need to use this package, but we've found the below architecture a nice way to include some common attributes across all schema that you build.
 
