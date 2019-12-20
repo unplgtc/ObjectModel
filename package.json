@@ -1,0 +1,23 @@
+{
+  "name": "@unplgtc/object-model",
+  "version": "0.0.0",
+  "description": "Fluent AJV object model validator for Node applications",
+  "main": "src/ObjectModel.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/unplgtc/ObjectModel.git"
+  },
+  "author": "Alex Guyot <alex@unapologetic.io> (https://unapologetic.io)",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/unplgtc/ObjectModel/issues"
+  },
+  "homepage": "https://github.com/unplgtc/ObjectModel#readme",
+  "dependencies": {
+    "ajv": "^6.10.2",
+    "ajv-keywords": "^3.4.1"
+  }
+}
