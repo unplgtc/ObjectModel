@@ -5,7 +5,7 @@ const enumerate = require('./utilities').enumerate,
 
 const ObjectModel = {
     get SCHEMA() {
-    	return enumerate(schemaService.schemata)
+    	return enumerate(schemaService.schemas)
     },
 
     ERRORS: errors,
