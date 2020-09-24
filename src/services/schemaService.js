@@ -3,37 +3,37 @@
 const ajvService = require('./ajvService'),
       UniqueKeyException = require('../errors/UniqueKeyException');
 
-const schemata = {};
+const schemas = {};
 
 const schemaService = {
-	get schemata() {
-		return schemata;
+	get schemas() {
+		return schemas;
 	},
 
 	schema(id) {
-		return schemata[id];
+		return schemas[id];
 	},
 
-	addSchemata(newSchemata) {
-		for (const key of Object.keys(newSchemata)) {
-			if (schemata[key]) {
+	addSchemas(newSchemas) {
+		for (const key of Object.keys(newSchemas)) {
+			if (schemas[key]) {
 				throw new UniqueKeyException(
 					`Schema key '${key}' already exists on this ObjectModel`,
 					key
 				);
 			}
-			schemata[key] = newSchemata[key];
+			schemas[key] = newSchemas[key];
 		}
 	},
 
 	addSchema(key, newSchema) {
-		if (schemata[key]) {
+		if (schemas[key]) {
 			throw new UniqueKeyException(
 				`Schema key '${key}' already exists on this ObjectModel`,
 				key
 			);
 		}
-		schemata[key] = newSchema;
+		schemas[key] = newSchema;
 	}
 }
 
